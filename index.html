@@ -4,11 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>webRTC</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/league.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
@@ -16,8 +16,142 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section>
+          <h2>What webRTC is?</h2>
+          <strong>webRTC</strong> ia a set of JS APIs that allow us to establish peer to peer connection between browsers to exchange data
+        </section>
+				<section>
+          <h2>API's</h2>
+          <ul>
+            <li><a href="https://webrtc.github.io/samples/src/content/getusermedia/gum/">getUserMedia():</a> capture audio and video</li>
+            <li><a href="https://webrtc.github.io/samples/src/content/getusermedia/record/">MediaRecorder:</a> record audio and video</li>
+            <li><a href="https://webrtc.github.io/samples/src/content/peerconnection/pc1/">RTCPeerConnection:</a> stream audio and video between users</li>
+            <li><a href="https://webrtc.github.io/samples/src/content/datachannel/basic/">RTCDataChannel:</a> stream data between users</li>
+          </ul>
+        </section>
+        <section>
+          <h2>Where can I use webRTC?</h2>
+         <img src="./assets/canIUse.png"/>
+        </section>
+        <section>
+          <h2>How does all of this work?</h2>
+          <img src="./assets/simple.gif"/>
+          <div class="decrease">*image from Agora.io</div>
+        </section>
+        <section>
+          <h2>Signaling</h2>
+          <p class="text__width"><strong>SDP</strong> — A Session Description Protocol (SDP), is an object containing information about the session connection such as the codec, address, media type, audio and video and so on. Both peers will exchange SDP’s so they can understand how to connect to each other. One in the form of an SDP Offer and another as an SDP Answer.</p>
+        </section>
+        <section>
+          <h3>Exchanging Session Description Protocols and ICE candidates</h3>
+          <img src="./assets/difficult.gif"/>
+          <div class="decrease">*image from Agora.io</div>
+        </section>
+        <section>
+          <h2>webRTC secure?</h2>
+          <p class="text__width">Encryption is mandatory for all WebRTC components, and its JavaScript APIs can only be used from secure origins (HTTPS or localhost).</p>
+        </section>
+        <section>
+          <h2>Limitations</h2>
+         <ul>
+          <li>UDP</li>
+          <li>No built-in signaling</li>
+         </ul>
+        </section>
+        <section>
+          <h2>Layout</h2>
+          <pre><code>
+            <div class ="video wrapper">
+              <video id="localVideo" autoplay></video>
+              <video id="remoteVideo" autoplay></video>
+            </div>
+            </code>
+          </pre>
+        </section>
+        <section>
+          <h2>Capture video</h2>
+          <pre><code>
+            const mediaStream = await navigator.mediaDevices
+            .getUserMedia({video:true});
+            localVideo.srcObject = mediaStream;
+            stream = mediaStream;
+            </code>
+          </pre>
+        </section>
+        <section>
+          <h2>Signaling. Local peer</h2>
+          <pre><code>
+          //Local peer creates new connection
+          let localPeerConnection;
+          localPeerConnection = new RTCPeerConnection(servers);
+          //Local peer runs the offer method and sends it to 
+          //remote peer via their signaling channel
+          localPeerConnection.createOffer()
+          .then((description)=>{
+            localPeerConnection.setLocalDescription(description)
+            api.send(
+              {event:'LOCAL_DESCRIPTION',payload:description}
+              )
+          });      
+            </code>
+          </pre>
+        </section>
+        <section>
+          <h2>Signaling. Remote peer</h2>
+          <pre><code>
+          //Remote peer creates new connection
+          let remotePeerConnection;
+          //Remote peer sets the description local peer sent him
+          remotePeerConnection = new RTCPeerConnection(servers);
+          api.on('LOCAL_DESCRIPTION', (description)=> {
+            remotePeerConnection
+            .setRemoteDescription(description);
+          })
+          //Remote peer sends his answer to local peer
+          remotePeerConnection.createAnswer()
+          .then((description)=>{
+          remotePeerConnection.setLocalDescription(description)
+          api.send(
+            {event:'REMOTE_DESCRIPTION,payload:description })})
+            </code>
+          </pre>
+        </section>
+        <section>
+          <h2>Candidate message</h2>
+          <pre><code>
+            //The onicecandidate is called 
+            //when network candidates become available
+            localPeerConnection.addEventListener('icecandidate', 
+            (event)=>{
+              if(event.candidate){
+                api.send(
+                  {event:'LOCAL_CANDIDATE',
+                  payload:event.candidate })
+              }
+            }
+            //add the candidate to the remote peer description
+            api.on('LOCAL_CANDIDATE',(candidate)=>{
+              remotePeerConnection
+              .addIceCandidate(new RTCIceCandidate(candidate));
+            })
+            </code>
+          </pre>
+        </section>
+        <section>
+          <h2>Ping!</h2>
+          <pre>
+          <code>
+            //receive a video track and start playing it
+            remotePeerConnection.addEventListener('track', 
+            event =>{
+              remoteVideo.srcObject = event.streams[0];
+            })
+        </code>
+      </pre>
+        </section>
+        <section>
+          <h2><a href="https://mariia22.github.io/WebRTC/" target="_blank">Demo</a></h2>
+        </section>
 			</div>
 		</div>
 
