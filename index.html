@@ -16,6 +16,7 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
+        <section><h2>Real time communication with WebRTC<h2></section>
 				<section>
           <h2>What webRTC is?</h2>
           <strong>webRTC</strong> ia a set of JS APIs that allow us to establish peer to peer connection between browsers to exchange data
@@ -23,15 +24,11 @@
 				<section>
           <h2>API's</h2>
           <ul>
-            <li><a href="https://webrtc.github.io/samples/src/content/getusermedia/gum/">getUserMedia():</a> capture audio and video</li>
-            <li><a href="https://webrtc.github.io/samples/src/content/getusermedia/record/">MediaRecorder:</a> record audio and video</li>
-            <li><a href="https://webrtc.github.io/samples/src/content/peerconnection/pc1/">RTCPeerConnection:</a> stream audio and video between users</li>
-            <li><a href="https://webrtc.github.io/samples/src/content/datachannel/basic/">RTCDataChannel:</a> stream data between users</li>
+            <li><a href="https://webrtc.github.io/samples/src/content/getusermedia/gum/" target="_blank">getUserMedia():</a> capture audio and video</li>
+            <li><a href="https://webrtc.github.io/samples/src/content/getusermedia/record/" target="_blank">MediaRecorder:</a> record audio and video</li>
+            <li><a href="https://webrtc.github.io/samples/src/content/peerconnection/pc1/" target="_blank">RTCPeerConnection:</a> stream audio and video between users</li>
+            <li><a href="https://webrtc.github.io/samples/src/content/datachannel/basic/" target="_blank">RTCDataChannel:</a> stream data between users</li>
           </ul>
-        </section>
-        <section>
-          <h2>Where can I use webRTC?</h2>
-         <img src="./assets/canIUse.png"/>
         </section>
         <section>
           <h2>How does all of this work?</h2>
@@ -41,6 +38,10 @@
         <section>
           <h2>Signaling</h2>
           <p class="text__width"><strong>SDP</strong> — A Session Description Protocol (SDP), is an object containing information about the session connection such as the codec, address, media type, audio and video and so on. Both peers will exchange SDP’s so they can understand how to connect to each other. One in the form of an SDP Offer and another as an SDP Answer.</p>
+        </section>
+        <section>
+          <h2>Interactive Connectivity Establishment</h2>
+          <p class="text__width"><strong>ICE</strong> -  is a public IP address and port that could potentially be an address that receives data. Each user will typically have multiple Ice candidates that are gathered by making a series of requests to a STUN server.</p>
         </section>
         <section>
           <h3>Exchanging Session Description Protocols and ICE candidates</h3>
@@ -57,6 +58,13 @@
           <li>UDP</li>
           <li>No built-in signaling</li>
          </ul>
+        </section>
+        <section>
+          <h2>Where can I use webRTC?</h2>
+         <img src="./assets/canIUse.png"/>
+        </section>
+        <section>
+          <h2><a href="https://mariia22.github.io/WebRTC/" target="_blank">Demo</a></h2>
         </section>
         <section>
           <h2>Layout</h2>
@@ -149,9 +157,7 @@
         </code>
       </pre>
         </section>
-        <section>
-          <h2><a href="https://mariia22.github.io/WebRTC/" target="_blank">Demo</a></h2>
-        </section>
+        <section>Thank you for your attention</section>
 			</div>
 		</div>
 
